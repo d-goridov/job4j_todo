@@ -2,16 +2,14 @@ package ru.job4j.todo.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.job4j.todo.model.Task;
 import ru.job4j.todo.service.TaskService;
 
 import java.time.LocalDateTime;
 
 @Controller
+@RequestMapping("/tasks")
 public class TaskController {
 
     private final TaskService service;
@@ -20,45 +18,45 @@ public class TaskController {
         this.service = service;
     }
 
-    @GetMapping("/all")
+    @GetMapping("/")
     public String getAll(Model model) {
         model.addAttribute("tasks", service.findAll());
         return "allTasks";
     }
 
-    @GetMapping("/formCreateTask")
+    @GetMapping("/formCreate")
     public String formCreateTask(Model model) {
         model.addAttribute("task", new Task(0, "описание", LocalDateTime.now(), false));
         return "addTask";
     }
 
-    @PostMapping("/createTask")
+    @PostMapping("/create")
     public String createTask(@ModelAttribute Task task) {
         task.setCreated(LocalDateTime.now());
         service.add(task);
-        return "redirect:/all";
+        return "redirect:/tasks/";
     }
 
-    @GetMapping("/getInfo/{taskId}")
-    public String getInfo(Model model, @PathVariable("taskId") int id) {
+    @GetMapping("/getInfo/{id}")
+    public String getInfo(Model model, @PathVariable("id") int id) {
         model.addAttribute("task", service.findById(id));
         return "taskInfo";
     }
 
-    @PostMapping("/delete/{taskId}")
-    public String deleteTask(@PathVariable("taskId") int id) {
+    @PostMapping("/delete/{id}")
+    public String deleteTask(@PathVariable("id") int id) {
         service.delete(id);
-        return "redirect:/all";
+        return "redirect:/tasks/";
     }
 
-    @PostMapping("/complete/{taskId}")
-    public String setCompleteStatus(@PathVariable("taskId") int id) {
+    @PostMapping("/complete/{id}")
+    public String setCompleteStatus(@PathVariable("id") int id) {
         service.complete(id);
-        return "redirect:/all";
+        return "redirect:/tasks/";
     }
 
-    @GetMapping("/edit/{taskId}")
-    public String getFormEditTask(@PathVariable("taskId") int id, Model model) {
+    @GetMapping("/edit/{id}")
+    public String getFormEditTask(@PathVariable("id") int id, Model model) {
         model.addAttribute("task", service.findById(id));
         return "editTask";
     }
@@ -66,7 +64,7 @@ public class TaskController {
     @PostMapping("/edit")
     public String edit(@ModelAttribute Task task) {
         service.update(task);
-        return "redirect:/all";
+        return "redirect:/tasks/";
     }
 
     @GetMapping("/newTasks")

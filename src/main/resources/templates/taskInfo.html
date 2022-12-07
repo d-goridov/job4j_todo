@@ -27,9 +27,9 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-item nav-link" th:href="@{/all}">Все задания</a>
-                <a class="nav-item nav-link" th:href="@{/newTasks}">Новые</a>
-                <a class="nav-item nav-link" th:href="@{/doneTasks}">Выполненные</a>
+                <a class="nav-item nav-link" th:href="@{/tasks/}">Все задания</a>
+                <a class="nav-item nav-link" th:href="@{/tasks/newTasks}">Новые</a>
+                <a class="nav-item nav-link" th:href="@{/tasks/doneTasks}">Выполненные</a>
             </div>
         </div>
     </nav>
@@ -54,17 +54,17 @@
         </table>
         <div class="btn-toolbar" role="toolbar">
             <div class="btn-group mr-2" role="group">
-                <form th:action="@{|/complete/${task.id}|}" th:method="POST">
+                <form th:action="@{|/tasks/complete/${task.id}|}" th:method="POST">
                     <button type="submit" class="btn btn-outline-success">Выполнить</button>
                 </form>
             </div>
             <div class="btn-group mr-2" role="group">
-                <form th:action="@{|/edit/${task.id}|}" th:method="GET">
+                <form th:action="@{|/tasks/edit/${task.id}|}" th:method="GET">
                     <button type="submit" class="btn btn-outline-secondary">Редактировать</button>
                 </form>
             </div>
             <div class="btn-group mr-2" role="group">
-                <form th:action="@{|/delete/${task.id}|}" th:method="POST">
+                <form th:action="@{|/tasks/delete/${task.id}|}" th:method="POST">
                     <button type="submit" class="btn btn-outline-danger">Удалить</button>
                 </form>
             </div>
