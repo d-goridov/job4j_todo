@@ -71,13 +71,13 @@ public class TaskController {
 
     @GetMapping("/newTasks")
     public String getNewTasksList(Model model) {
-        model.addAttribute("newTasks", service.findNewTasks());
+        model.addAttribute("newTasks", service.findTasks(false));
         return "newTasks";
     }
 
     @GetMapping("/doneTasks")
     public String getDoneTasksList(Model model) {
-        model.addAttribute("doneTasks", service.findFinishedTasks());
+        model.addAttribute("doneTasks", service.findTasks(true));
         return "doneTasks";
     }
 }

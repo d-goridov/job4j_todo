@@ -56,11 +56,5 @@ public interface TaskService {
      * Метод поиска новых заданий
      * @return - список заданий
      */
-    List<Task> findNewTasks();
-
-    /**
-     * Метод поиска выполненных заданий
-     * @return - список заданий
-     */
-    List<Task> findFinishedTasks();
+    List<Task> findTasks(boolean status);
 }

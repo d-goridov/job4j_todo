@@ -105,26 +105,13 @@ public class HbmStore implements Store {
     }
 
     @Override
-    public List<Task> findNewTasks() {
+    public List<Task> findTasks(boolean status) {
         List<Task> rsl;
         try (Session session = sf.openSession()) {
             session.beginTransaction();
             rsl = session.createQuery("select t FROM Task AS t WHERE t.done = :fDone")
-                         .setParameter("fDone", false)
+                         .setParameter("fDone", status)
                          .getResultList();
-            session.getTransaction().commit();
-        }
-        return rsl;
-    }
-
-    @Override
-    public List<Task> findFinishedTasks() {
-        List<Task> rsl;
-        try (Session session = sf.openSession()) {
-            session.beginTransaction();
-            rsl = session.createQuery("select t FROM Task AS t WHERE t.done = :fDone")
-                    .setParameter("fDone", true)
-                    .getResultList();
             session.getTransaction().commit();
         }
         return rsl;

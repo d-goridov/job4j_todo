@@ -53,15 +53,9 @@ public interface Store {
     List<Task> findAll();
 
     /**
-     * Метод выполняет поиск новых заданий
+     * Метод выполняет заданий в зависимости
+     * от стутуса выполнения
      * @return - список заданий
      */
-    List<Task> findNewTasks();
-
-    /**
-     * Метод выполняет поиск завершенных
-     * заданий
-     * @return - список заданий
-     */
-    List<Task> findFinishedTasks();
+    List<Task> findTasks(boolean status);
 }

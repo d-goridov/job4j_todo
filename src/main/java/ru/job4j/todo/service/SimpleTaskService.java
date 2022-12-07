@@ -52,12 +52,8 @@ public class SimpleTaskService implements TaskService {
     }
 
     @Override
-    public List<Task> findNewTasks() {
-        return store.findNewTasks();
+    public List<Task> findTasks(boolean status) {
+        return store.findTasks(status);
     }
 
-    @Override
-    public List<Task> findFinishedTasks() {
-        return store.findFinishedTasks();
-    }
 }
