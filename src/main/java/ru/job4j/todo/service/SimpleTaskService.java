@@ -27,13 +27,13 @@ public class SimpleTaskService implements TaskService {
     }
 
     @Override
-    public void update(Task task) {
-        store.update(task);
+    public boolean update(Task task) {
+        return store.update(task);
     }
 
     @Override
-    public void delete(int id) {
-        store.delete(id);
+    public boolean delete(int id) {
+        return store.delete(id);
     }
 
     @Override

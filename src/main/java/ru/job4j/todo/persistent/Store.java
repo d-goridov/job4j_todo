@@ -16,16 +16,20 @@ public interface Store {
     Task add(Task task);
 
     /**
-     * Метод обновляет информацию о задании
+     * Метод обновляет задание
      * @param task - объект задание
+     * @return - true если обновление успешное
+     * иначе - false
      */
-    void update(Task task);
+    boolean update(Task task);
 
     /**
      * Метод удаляет задание
-     * @param id - объект задание
+     * @param id - идентификатор задания
+     * @return - true если удаление успешное
+     * иначе - false
      */
-    void delete(int id);
+    boolean delete(int id);
 
     /**
      * Метод выполняет поиск задания по

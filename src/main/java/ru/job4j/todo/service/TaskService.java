@@ -18,14 +18,18 @@ public interface TaskService {
     /**
      * Метод обновления задания
      * @param task - объект задание
+     * @return - true если обновление успешное
+     * иначе - false
      */
-    void update(Task task);
+    boolean update(Task task);
 
     /**
      * Метод удаления задания
      * @param id - объект задание
+     * @return - true если удаление успешное
+     * иначе - false
      */
-     void delete(int id);
+     boolean delete(int id);
 
     /**
      * Метод устанавливает статус задания

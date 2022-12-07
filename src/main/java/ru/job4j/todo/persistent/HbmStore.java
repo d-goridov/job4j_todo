@@ -29,7 +29,8 @@ public class HbmStore implements Store {
     }
 
     @Override
-    public void update(Task task) {
+    public boolean update(Task task) {
+        boolean rsl = false;
         Session session = sf.openSession();
         try {
             session.beginTransaction();
@@ -38,26 +39,29 @@ public class HbmStore implements Store {
             query.setParameter("fDescription", task.getDescription());
             query.setParameter("fDone", task.isDone());
             query.setParameter("fId", task.getId());
-            query.executeUpdate();
+            rsl = query.executeUpdate() > 0;
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
         }
         session.close();
+        return rsl;
     }
 
-    public void delete(int id) {
+    public boolean delete(int id) {
+        boolean rsl = false;
         Session session = sf.openSession();
         try {
             session.beginTransaction();
-            session.createQuery("DELETE Task WHERE id = :fId")
-                    .setParameter("fId", id)
-                    .executeUpdate();
+            Query<Task> query = session.createQuery("DELETE Task WHERE id = :fId")
+                    .setParameter("fId", id);
+            rsl = query.executeUpdate() > 0;
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
         }
         session.close();
+        return rsl;
     }
 
     @Override
