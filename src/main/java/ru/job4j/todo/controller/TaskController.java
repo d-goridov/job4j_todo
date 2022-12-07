@@ -45,7 +45,9 @@ public class TaskController {
 
     @PostMapping("/delete/{id}")
     public String deleteTask(@PathVariable("id") int id) {
-        service.delete(id);
+        if (!service.delete(id)) {
+            return "error";
+        }
         return "redirect:/tasks/";
     }
 
@@ -63,7 +65,9 @@ public class TaskController {
 
     @PostMapping("/edit")
     public String edit(@ModelAttribute Task task) {
-        service.update(task);
+        if (!service.update(task)) {
+            return "/tasks/error";
+        }
         return "redirect:/tasks/";
     }
 
