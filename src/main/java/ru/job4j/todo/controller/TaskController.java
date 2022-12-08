@@ -21,13 +21,13 @@ public class TaskController {
     @GetMapping("/")
     public String getAll(Model model) {
         model.addAttribute("tasks", service.findAll());
-        return "allTasks";
+        return "tasks/all";
     }
 
     @GetMapping("/formCreate")
     public String formCreateTask(Model model) {
         model.addAttribute("task", new Task(0, "описание", LocalDateTime.now(), false));
-        return "addTask";
+        return "tasks/add";
     }
 
     @PostMapping("/create")
@@ -40,13 +40,13 @@ public class TaskController {
     @GetMapping("/getInfo/{id}")
     public String getInfo(Model model, @PathVariable("id") int id) {
         model.addAttribute("task", service.findById(id));
-        return "taskInfo";
+        return "tasks/info";
     }
 
     @PostMapping("/delete/{id}")
     public String deleteTask(@PathVariable("id") int id) {
         if (!service.delete(id)) {
-            return "error";
+            return "shared/error";
         }
         return "redirect:/tasks/";
     }
@@ -60,7 +60,7 @@ public class TaskController {
     @GetMapping("/edit/{id}")
     public String getFormEditTask(@PathVariable("id") int id, Model model) {
         model.addAttribute("task", service.findById(id));
-        return "editTask";
+        return "tasks/edit";
     }
 
     @PostMapping("/edit")
@@ -74,12 +74,12 @@ public class TaskController {
     @GetMapping("/newTasks")
     public String getNewTasksList(Model model) {
         model.addAttribute("newTasks", service.findTasks(false));
-        return "newTasks";
+        return "tasks/new";
     }
 
     @GetMapping("/doneTasks")
     public String getDoneTasksList(Model model) {
         model.addAttribute("doneTasks", service.findTasks(true));
-        return "doneTasks";
+        return "tasks/done";
     }
 }
