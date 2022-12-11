@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Интерфейс описывает функционал хранилища
  */
-public interface Store {
+public interface TaskRepository {
     /**
      * Метод добавления задания
      * @param task - объект задание

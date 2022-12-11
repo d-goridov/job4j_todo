@@ -2,7 +2,7 @@ package ru.job4j.todo.service;
 
 import org.springframework.stereotype.Service;
 import ru.job4j.todo.model.Task;
-import ru.job4j.todo.persistent.Store;
+import ru.job4j.todo.persistent.TaskRepository;
 
 import java.util.List;
 
@@ -15,45 +15,45 @@ public class SimpleTaskService implements TaskService {
     /**
      * Объект хранилища
      */
-    private final Store store;
+    private final TaskRepository repository;
 
-    public SimpleTaskService(Store store) {
-        this.store = store;
+    public SimpleTaskService(TaskRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public Task add(Task task) {
-        return store.add(task);
+        return repository.add(task);
     }
 
     @Override
     public boolean update(Task task) {
-        return store.update(task);
+        return repository.update(task);
     }
 
     @Override
     public boolean delete(int id) {
-        return store.delete(id);
+        return repository.delete(id);
     }
 
     @Override
     public void complete(int id) {
-        store.complete(id);
+        repository.complete(id);
     }
 
     @Override
     public Task findById(int id) {
-        return store.findById(id);
+        return repository.findById(id);
     }
 
     @Override
     public List<Task> findAll() {
-        return store.findAll();
+        return repository.findAll();
     }
 
     @Override
     public List<Task> findTasks(boolean status) {
-        return store.findTasks(status);
+        return repository.findTasks(status);
     }
 
 }

@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Repository
 @AllArgsConstructor
-public class HbmStore implements Store {
+public class HbmTaskRepository implements TaskRepository {
     private final SessionFactory sf;
 
 
