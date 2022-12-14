@@ -1,11 +1,23 @@
 package ru.job4j.todo.service;
 
+import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Service;
 import ru.job4j.todo.model.User;
 import ru.job4j.todo.persistent.UserRepository;
 
 import java.util.Optional;
 
+/**
+ * Класс описывает бизнес-логику приложения по
+ * работе с пользователем. Является потокобезопасным,
+ * т.к. проблема возникающая при добавлении одинаковых
+ * пользователей в методе add() решена на уровне БД c помощью unique
+ * constraint поля email у сущности User.
+ * @author Dmitriy Goridov
+ * @version 1.0
+ */
+
+@ThreadSafe
 @Service
 public class SimpleUserService implements UserService {
 
