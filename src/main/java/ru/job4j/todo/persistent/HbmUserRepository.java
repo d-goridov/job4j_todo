@@ -11,10 +11,16 @@ import ru.job4j.todo.model.User;
 
 import java.util.Optional;
 
+/**
+ * Класс представляет собой реализацию хранилища пользователей,
+ * в виде БД со взаимодествием через Hibernate
+ */
 @Repository
 @AllArgsConstructor
 public class HbmUserRepository implements UserRepository {
     private final SessionFactory sf;
+    private static final String GET_BY_EMAIL_PASSWORD = "SELECT u FROM User AS u where u.email = :fEmail and "
+            + "u.password = :fPassword";
     private static final Logger LOG = LoggerFactory.getLogger(HbmUserRepository.class.getName());
 
     @Override
@@ -36,9 +42,9 @@ public class HbmUserRepository implements UserRepository {
         Optional<User> user = Optional.empty();
         try (Session session = sf.openSession()) {
             session.beginTransaction();
-            Query<User> query = session.createQuery("SELECT u FROM User AS u where u.email = :fEmail and "
-                    + "u.password = :fPassword").setParameter("fEmail", email)
-                                                .setParameter("fPassword", password);
+            Query<User> query = session.createQuery(GET_BY_EMAIL_PASSWORD)
+                                       .setParameter("fEmail", email)
+                                       .setParameter("fPassword", password);
             user = query.uniqueResultOptional();
             session.getTransaction().commit();
         } catch (Exception e) {
