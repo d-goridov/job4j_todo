@@ -5,7 +5,8 @@ import ru.job4j.todo.model.Task;
 import java.util.List;
 
 /**
- * Интерфейс описывает функционал хранилища
+ * Хранилище заданий
+ * @see ru.job4j.todo.model.Task
  */
 public interface TaskRepository {
     /**

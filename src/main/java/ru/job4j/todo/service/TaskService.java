@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * Интерфейс описывает бизнес логику приложения
+ * по работе с заданиями
  */
 public interface TaskService {
     /**
