@@ -1,13 +1,10 @@
 package ru.job4j.todo.persistent;
 
 import lombok.AllArgsConstructor;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import ru.job4j.todo.model.Task;
-
 import java.util.List;
+import java.util.Map;
 
 /**
  * Класс представляет собой реализацию хранилища заданий,
@@ -23,104 +20,43 @@ public class HbmTaskRepository implements TaskRepository {
     private static final String SET_COMPLETE_TASK = "UPDATE Task SET done = :fDone WHERE id = :fId";
     private static final String FIND_BY_STATUS = "SELECT t FROM Task AS t WHERE t.done = :fDone";
     private static final String FIND_ALL = "FROM Task";
-    private final SessionFactory sf;
 
+    private final CrudRepositoryImpl crudRepository;
 
     @Override
     public Task add(Task task) {
-        try (Session session = sf.openSession()) {
-            session.beginTransaction();
-            session.save(task);
-            session.getTransaction().commit();
-        }
+        crudRepository.run(session -> session.persist(task));
         return task;
     }
 
     @Override
     public boolean update(Task task) {
-        boolean rsl = false;
-        Session session = sf.openSession();
-        try {
-            session.beginTransaction();
-            Query<Task> query = session.createQuery(UPDATE);
-            query.setParameter("fDescription", task.getDescription());
-            query.setParameter("fDone", task.isDone());
-            query.setParameter("fId", task.getId());
-            rsl = query.executeUpdate() > 0;
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            session.getTransaction().rollback();
-        }
-        session.close();
-        return rsl;
+        return crudRepository.queryGetBooleanResult(UPDATE,
+                Map.of("fDescription", task.getDescription(), "fDone", task.isDone(), "fId", task.getId()));
     }
 
     public boolean delete(int id) {
-        boolean rsl = false;
-        Session session = sf.openSession();
-        try {
-            session.beginTransaction();
-            Query<Task> query = session.createQuery(DELETE)
-                    .setParameter("fId", id);
-            rsl = query.executeUpdate() > 0;
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            session.getTransaction().rollback();
-        }
-        session.close();
-        return rsl;
+        return crudRepository.queryGetBooleanResult(DELETE,
+                Map.of("fId", id));
     }
 
     @Override
     public Task findById(int id) {
-        Task  task;
-        try (Session session = sf.openSession()) {
-            session.beginTransaction();
-            Query<Task> query = session.createQuery(FIND_BY_ID, Task.class)
-                                       .setParameter("fId", id);
-            task = query.uniqueResult();
-            session.getTransaction().commit();
-        }
-        return task;
+        return crudRepository.getSingleResultObj(FIND_BY_ID, Task.class, Map.of("fId", id));
     }
 
     @Override
     public void complete(int id) {
-        Session session = sf.openSession();
-        try {
-            session.beginTransaction();
-            session.createQuery(SET_COMPLETE_TASK)
-                    .setParameter("fDone", true)
-                    .setParameter("fId", id)
-                    .executeUpdate();
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            session.getTransaction().rollback();
-        }
-        session.close();
+        crudRepository.run(SET_COMPLETE_TASK, Map.of("fDone", true,  "fId", id));
     }
 
     @Override
     public List<Task> findAll() {
-        List<Task> rsl;
-        try (Session session = sf.openSession()) {
-            session.beginTransaction();
-            rsl = session.createQuery(FIND_ALL).getResultList();
-            session.getTransaction().commit();
-        }
-        return rsl;
+       return crudRepository.getListResult(FIND_ALL, Task.class);
     }
 
     @Override
     public List<Task> findTasks(boolean status) {
-        List<Task> rsl;
-        try (Session session = sf.openSession()) {
-            session.beginTransaction();
-            rsl = session.createQuery(FIND_BY_STATUS)
-                         .setParameter("fDone", status)
-                         .getResultList();
-            session.getTransaction().commit();
-        }
-        return rsl;
+        return crudRepository.getListResult(FIND_BY_STATUS, Map.of("fDone", status) ,Task.class);
     }
 }
