@@ -57,6 +57,6 @@ public class HbmTaskRepository implements TaskRepository {
 
     @Override
     public List<Task> findTasks(boolean status) {
-        return crudRepository.getListResult(FIND_BY_STATUS, Map.of("fDone", status) ,Task.class);
+        return crudRepository.getListResult(FIND_BY_STATUS, Map.of("fDone", status), Task.class);
     }
 }
