@@ -3,6 +3,7 @@ package ru.job4j.todo.persistent;
 import lombok.AllArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -38,18 +39,20 @@ public class HbmCrudRepository implements CrudRepository {
      */
     public <T> T exucuteCommand(Function<Session, T> command) {
         Session session = sf.openSession();
-        try (session) {
-            var tx = session.beginTransaction();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
             T rsl = command.apply(session);
             tx.commit();
             return rsl;
         } catch (Exception e) {
-            var tx = session.getTransaction();
-            if (tx.isActive()) {
+            if (tx != null) {
                 tx.rollback();
             }
             LOG.error(e.getMessage(), e);
             throw e;
+        } finally {
+            session.close();
         }
     }
 
