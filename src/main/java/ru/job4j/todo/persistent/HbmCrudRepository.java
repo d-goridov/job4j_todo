@@ -15,12 +15,12 @@ import java.util.function.Function;
 
 @AllArgsConstructor
 @Repository
-public class CrudRepositoryImpl implements CrudRepository {
+public class HbmCrudRepository implements CrudRepository {
 
     /**
      * Логгер
      */
-    private final static Logger LOG = LoggerFactory.getLogger(CrudRepositoryImpl.class.getName());
+    private final static Logger LOG = LoggerFactory.getLogger(HbmCrudRepository.class.getName());
 
     /**
      * Объект для получения сессии к БД
@@ -70,7 +70,7 @@ public class CrudRepositoryImpl implements CrudRepository {
     /**
      * Метод принимает параметры, создает команду,
      * делегирует на выполнение методу run(Consumer<Session> command)
-     * @param query - SQL запрос в виде строки
+     * @param query -HQL запрос в виде строки
      * @param args - параметры запроса, в виде карты, где key - псевдоним
      *               value - значение
      */
@@ -88,7 +88,7 @@ public class CrudRepositoryImpl implements CrudRepository {
     /**
      * Метод принимает параметры, создает команду,
      * передает на выполнение в метод exucuteCommand(Function<Session, T> command)
-     * @param query - SQL запрос в виде строки
+     * @param query - HQL запрос в виде строки
      * @param cl - класс, объект которого мы получаем
      * @param args - параметры запроса, в виде карты, где
      *        key - псевдоним, value - значение
@@ -108,7 +108,7 @@ public class CrudRepositoryImpl implements CrudRepository {
     /**
      * Метод принимает параметры, создает команду,
      * передает на выполнение в метод exucuteCommand(Function<Session, T> command)
-     * @param query - SQL запрос в виде строки
+     * @param query - HQL запрос в виде строки
      * @param args - параметры запроса, в виде карты, где
      *        key - псевдоним, value - значение
      * @return - true - если команда выполнена успешно, иначе - false
@@ -127,7 +127,7 @@ public class CrudRepositoryImpl implements CrudRepository {
     /**
      * Метод принимает параметры, создает команду,
      * передает на выполнение в метод exucuteCommand(Function<Session, T> command)
-     * @param query - SQL запрос в виде строки
+     * @param query - HQL запрос в виде строки
      * @param cl - класс, объект которого мы получаем
      * @return - список объектов типа T
      */
@@ -141,7 +141,7 @@ public class CrudRepositoryImpl implements CrudRepository {
     /**
      * Метод принимает параметры, создает команду,
      * передает на выполнение в метод exucuteCommand(Function<Session, T> command)
-     * @param query - SQL запрос в виде строки
+     * @param query - HQL запрос в виде строки
      * @param args - параметры запроса, в виде карты, где
      *               key - псевдоним, value - значение
      * @param cl - класс, объект которого мы получаем
@@ -161,7 +161,7 @@ public class CrudRepositoryImpl implements CrudRepository {
     /**
      * Метод принимает параметры, создает команду,
      * передает на выполнение в метод exucuteCommand(Function<Session, T> command)
-     * @param query - SQL запрос в виде строки
+     * @param query - HQL запрос в виде строки
      * @param args - параметры запроса, в виде карты, где
      *               key - псевдоним, value - значение
      * @param cl - класс, объект которого мы получаем

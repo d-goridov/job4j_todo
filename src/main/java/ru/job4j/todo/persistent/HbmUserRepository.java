@@ -16,7 +16,7 @@ import java.util.Optional;
 public class HbmUserRepository implements UserRepository {
     private static final String GET_BY_EMAIL_PASSWORD = "SELECT u FROM User AS u where u.email = :fEmail and "
             + "u.password = :fPassword";
-    private final CrudRepositoryImpl crudRepository;
+    private final CrudRepository crudRepository;
 
     @Override
     public Optional<User> add(User user) {

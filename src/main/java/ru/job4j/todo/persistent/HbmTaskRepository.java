@@ -21,7 +21,7 @@ public class HbmTaskRepository implements TaskRepository {
     private static final String FIND_BY_STATUS = "SELECT t FROM Task AS t WHERE t.done = :fDone";
     private static final String FIND_ALL = "FROM Task";
 
-    private final CrudRepositoryImpl crudRepository;
+    private final CrudRepository crudRepository;
 
     @Override
     public Task add(Task task) {
