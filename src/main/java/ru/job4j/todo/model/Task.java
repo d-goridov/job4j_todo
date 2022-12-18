@@ -37,4 +37,8 @@ public class Task {
      * Статус выполнения
      */
     private boolean done;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

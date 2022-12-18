@@ -31,12 +31,15 @@ public class TaskController {
 
     @GetMapping("/formCreate")
     public String formCreateTask(Model model) {
-        model.addAttribute("task", new Task(0, "описание", LocalDateTime.now(), false));
+        model.addAttribute("task", new Task(0, "описание", LocalDateTime.now(),
+                false, new User()));
         return "tasks/add";
     }
 
     @PostMapping("/create")
-    public String createTask(@ModelAttribute Task task) {
+    public String createTask(@ModelAttribute Task task, HttpSession session) {
+        User user = UserSession.getUser(session);
+        task.setUser(user);
         task.setCreated(LocalDateTime.now());
         service.add(task);
         return "redirect:/tasks/";
