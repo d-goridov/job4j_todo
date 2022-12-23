@@ -14,12 +14,12 @@ import java.util.Map;
 @AllArgsConstructor
 public class HbmTaskRepository implements TaskRepository {
     private static final String UPDATE = "UPDATE Task SET description = :fDescription, "
-            + "done = :fDone WHERE id = :fId";
+            + "done = :fDone, priority_id = :fPriority WHERE id = :fId";
     private static final String DELETE = "DELETE Task WHERE id = :fId";
-    private static final String FIND_BY_ID = "SELECT t FROM Task AS t WHERE id = :fId";
+    private static final String FIND_BY_ID = "SELECT t FROM Task AS t join fetch t.priority WHERE t.id = :fId";
     private static final String SET_COMPLETE_TASK = "UPDATE Task SET done = :fDone WHERE id = :fId";
-    private static final String FIND_BY_STATUS = "SELECT t FROM Task AS t WHERE t.done = :fDone";
-    private static final String FIND_ALL = "FROM Task";
+    private static final String FIND_BY_STATUS = "SELECT t FROM Task AS t join fetch t.priority WHERE t.done = :fDone";
+    private static final String FIND_ALL = "FROM Task AS t join fetch t.priority";
 
     private final CrudRepository crudRepository;
 
@@ -32,7 +32,8 @@ public class HbmTaskRepository implements TaskRepository {
     @Override
     public boolean update(Task task) {
         return crudRepository.queryGetBooleanResult(UPDATE,
-                Map.of("fDescription", task.getDescription(), "fDone", task.isDone(), "fId", task.getId()));
+                Map.of("fDescription", task.getDescription(), "fDone", task.isDone(),
+                        "fPriority", task.getPriority().getId(), "fId", task.getId()));
     }
 
     public boolean delete(int id) {

@@ -40,6 +40,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Описание</th>
                 <th scope="col">Дата создания</th>
+                <th scope="col">Приоритет</th>
                 <th scope="col">Статус</th>
             </tr>
             </thead>
@@ -48,6 +49,7 @@
                 <td th:text="${task.id}"></td>
                 <td th:text="${task.description}"></td>
                 <td th:text="${task.created}"></td>
+                <td th:text="${task.getPriority().getName()}"></td>
                 <td th:text="${task.done} ? 'Выполнено' : 'Новое'"></td>
             </tr>
             </tbody>

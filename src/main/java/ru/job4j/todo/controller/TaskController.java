@@ -3,8 +3,10 @@ package ru.job4j.todo.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.job4j.todo.model.Priority;
 import ru.job4j.todo.model.Task;
 import ru.job4j.todo.model.User;
+import ru.job4j.todo.service.PriorityService;
 import ru.job4j.todo.service.TaskService;
 import ru.job4j.todo.util.UserSession;
 
@@ -15,24 +17,27 @@ import java.time.LocalDateTime;
 @RequestMapping("/tasks")
 public class TaskController {
 
-    private final TaskService service;
+    private final TaskService taskService;
+    private final PriorityService priorityService;
 
-    public TaskController(TaskService service) {
-        this.service = service;
+    public TaskController(TaskService service, PriorityService priorityService) {
+        this.taskService = service;
+        this.priorityService = priorityService;
     }
 
     @GetMapping("/")
     public String getAll(Model model, HttpSession session) {
         User user = UserSession.getUser(session);
         model.addAttribute("user", user);
-        model.addAttribute("tasks", service.findAll());
+        model.addAttribute("tasks", taskService.findAll());
         return "tasks/all";
     }
 
     @GetMapping("/formCreate")
     public String formCreateTask(Model model) {
         model.addAttribute("task", new Task(0, "описание", LocalDateTime.now(),
-                false, new User()));
+                false, new User(), new Priority()));
+        model.addAttribute("priorities", priorityService.getAll());
         return "tasks/add";
     }
 
@@ -41,19 +46,21 @@ public class TaskController {
         User user = UserSession.getUser(session);
         task.setUser(user);
         task.setCreated(LocalDateTime.now());
-        service.add(task);
+        taskService.add(task);
         return "redirect:/tasks/";
     }
 
     @GetMapping("/getInfo/{id}")
     public String getInfo(Model model, @PathVariable("id") int id) {
-        model.addAttribute("task", service.findById(id));
+        Task task = taskService.findById(id);
+        model.addAttribute("task", task);
+        model.addAttribute("priorities", priorityService.getAll());
         return "tasks/info";
     }
 
     @PostMapping("/delete/{id}")
     public String deleteTask(@PathVariable("id") int id) {
-        if (!service.delete(id)) {
+        if (!taskService.delete(id)) {
             return "shared/error";
         }
         return "redirect:/tasks/";
@@ -61,19 +68,20 @@ public class TaskController {
 
     @PostMapping("/complete/{id}")
     public String setCompleteStatus(@PathVariable("id") int id) {
-        service.complete(id);
+        taskService.complete(id);
         return "redirect:/tasks/";
     }
 
     @GetMapping("/edit/{id}")
     public String getFormEditTask(@PathVariable("id") int id, Model model) {
-        model.addAttribute("task", service.findById(id));
+        model.addAttribute("task", taskService.findById(id));
+        model.addAttribute("priorities", priorityService.getAll());
         return "tasks/edit";
     }
 
     @PostMapping("/edit")
     public String edit(@ModelAttribute Task task) {
-        if (!service.update(task)) {
+        if (!taskService.update(task)) {
             return "/tasks/error";
         }
         return "redirect:/tasks/";
@@ -83,7 +91,7 @@ public class TaskController {
     public String getNewTasksList(Model model, HttpSession session) {
         User user = UserSession.getUser(session);
         model.addAttribute("user", user);
-        model.addAttribute("newTasks", service.findTasks(false));
+        model.addAttribute("newTasks", taskService.findTasks(false));
         return "tasks/new";
     }
 
@@ -91,7 +99,7 @@ public class TaskController {
     public String getDoneTasksList(Model model, HttpSession session) {
         User user = UserSession.getUser(session);
         model.addAttribute("user", user);
-        model.addAttribute("doneTasks", service.findTasks(true));
+        model.addAttribute("doneTasks", taskService.findTasks(true));
         return "tasks/done";
     }
 }
