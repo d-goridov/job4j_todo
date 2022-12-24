@@ -12,6 +12,7 @@ import ru.job4j.todo.util.UserSession;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/tasks")
@@ -52,7 +53,11 @@ public class TaskController {
 
     @GetMapping("/getInfo/{id}")
     public String getInfo(Model model, @PathVariable("id") int id) {
-        Task task = taskService.findById(id);
+        Optional<Task> optTask = taskService.findById(id);
+        if(optTask.isEmpty()) {
+            return "shared/error";
+        }
+        Task task = optTask.get();
         model.addAttribute("task", task);
         model.addAttribute("priorities", priorityService.getAll());
         return "tasks/info";
@@ -74,7 +79,11 @@ public class TaskController {
 
     @GetMapping("/edit/{id}")
     public String getFormEditTask(@PathVariable("id") int id, Model model) {
-        model.addAttribute("task", taskService.findById(id));
+        Optional<Task> task = taskService.findById(id);
+        if(task.isEmpty()) {
+            return "shared/error";
+        }
+        model.addAttribute("task", task.get());
         model.addAttribute("priorities", priorityService.getAll());
         return "tasks/edit";
     }

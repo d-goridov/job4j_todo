@@ -3,6 +3,7 @@ package ru.job4j.todo.service;
 import ru.job4j.todo.model.Task;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Интерфейс описывает бизнес логику приложения
@@ -45,7 +46,7 @@ public interface TaskService {
      * @param id - идентификатор задания
      * @return - найденное задание
      */
-    Task findById(int id);
+    Optional<Task> findById(int id);
 
     /**
      * Метод поиска всех заданий

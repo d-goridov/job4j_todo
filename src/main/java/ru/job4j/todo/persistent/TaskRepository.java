@@ -3,6 +3,7 @@ package ru.job4j.todo.persistent;
 import ru.job4j.todo.model.Task;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Хранилище заданий
@@ -36,9 +37,9 @@ public interface TaskRepository {
      * Метод выполняет поиск задания по
      * идентификатору
      * @param id - идентификатор задания
-     * @return - объект типа Task
+     * @return - объект типа Optional<Task>
      */
-    Task findById(int id);
+    Optional<Task> findById(int id);
 
     /**
      * Метод устанавливает заданию статус

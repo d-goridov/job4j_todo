@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import ru.job4j.todo.model.Task;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Класс представляет собой реализацию хранилища заданий,
@@ -42,8 +43,8 @@ public class HbmTaskRepository implements TaskRepository {
     }
 
     @Override
-    public Task findById(int id) {
-        return crudRepository.getSingleResultObj(FIND_BY_ID, Task.class, Map.of("fId", id));
+    public Optional<Task> findById(int id) {
+        return crudRepository.optional(FIND_BY_ID, Task.class, Map.of("fId", id));
     }
 
     @Override

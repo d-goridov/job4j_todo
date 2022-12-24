@@ -5,6 +5,7 @@ import ru.job4j.todo.model.Task;
 import ru.job4j.todo.persistent.TaskRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Реализация сервиса по работе с заданиями
@@ -42,7 +43,7 @@ public class SimpleTaskService implements TaskService {
     }
 
     @Override
-    public Task findById(int id) {
+    public Optional<Task> findById(int id) {
         return repository.findById(id);
     }
 
