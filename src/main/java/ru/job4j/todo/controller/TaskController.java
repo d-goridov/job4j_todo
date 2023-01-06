@@ -61,7 +61,7 @@ public class TaskController {
     @GetMapping("/getInfo/{id}")
     public String getInfo(Model model, @PathVariable("id") int id) {
         Optional<Task> optTask = taskService.findById(id);
-        if(optTask.isEmpty()) {
+        if (optTask.isEmpty()) {
             return "shared/error";
         }
         Task task = optTask.get();
@@ -87,7 +87,7 @@ public class TaskController {
     @GetMapping("/edit/{id}")
     public String getFormEditTask(@PathVariable("id") int id, Model model) {
         Optional<Task> task = taskService.findById(id);
-        if(task.isEmpty()) {
+        if (task.isEmpty()) {
             return "shared/error";
         }
         model.addAttribute("task", task.get());

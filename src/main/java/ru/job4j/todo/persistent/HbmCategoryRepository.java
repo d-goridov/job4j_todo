@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
-public class HbmCategoryRepository implements CategoryRepository{
+public class HbmCategoryRepository implements CategoryRepository {
 
     private static final String GET_ALL = "FROM Category ORDER BY id";
     private static final String FIND_BY_ID = "SELECT c FROM Category AS c WHERE c.id = :fId";
