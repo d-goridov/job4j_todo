@@ -1,7 +1,10 @@
 package ru.job4j.todo.service;
 
 import org.springframework.stereotype.Service;
+import ru.job4j.todo.model.Category;
 import ru.job4j.todo.model.Task;
+import ru.job4j.todo.persistent.CategoryRepository;
+import ru.job4j.todo.persistent.PriorityRepository;
 import ru.job4j.todo.persistent.TaskRepository;
 
 import java.util.List;
@@ -14,16 +17,30 @@ import java.util.Optional;
 public class SimpleTaskService implements TaskService {
 
     /**
-     * Объект хранилища
+     * Объект хранилища заданий
      */
     private final TaskRepository repository;
+    /**
+     * Объект хранилища приоритетов
+     */
+    private final PriorityRepository priorityRepository;
+    /**
+     * Объект хранилища категорий
+     */
+    private final CategoryRepository categoryRepository;
 
-    public SimpleTaskService(TaskRepository repository) {
+    public SimpleTaskService(TaskRepository repository, PriorityRepository priorityRepository,
+                             CategoryRepository categoryRepository) {
         this.repository = repository;
+        this.priorityRepository = priorityRepository;
+        this.categoryRepository = categoryRepository;
     }
 
+
     @Override
-    public Task add(Task task) {
+    public Task add(Task task, List<Integer> ids) {
+        List<Category> categories = categoryRepository.findByIds(ids);
+        task.setCategoryList(categories);
         return repository.add(task);
     }
 

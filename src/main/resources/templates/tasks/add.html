@@ -52,6 +52,12 @@
                             <option th:each="priority: ${priorities}" th:value="${priority.id}" th:text="${priority.name}"></option>
                         </select>
                     </div>
+                    <div class="form-check">
+                        <label for="category.id">Категории задания</label>
+                        <select class="form-control" name="categories" id="category.id"  multiple="multiple">
+                            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+                        </select>
+                    </div>
                     <button type="submit" class="btn btn-primary">Создать задание</button>
                 </form>
             </div>

@@ -15,7 +15,7 @@ public interface TaskService {
      * @param task - объект задание
      * @return - добавленное задание
      */
-    Task add(Task task);
+    Task add(Task task, List<Integer> ids);
 
     /**
      * Метод обновления задания
@@ -55,7 +55,9 @@ public interface TaskService {
     List<Task> findAll();
 
     /**
-     * Метод поиска новых заданий
+     * Метод поиска заданий
+     * в зависимости от статуса
+     * @param status - статус выполнения
      * @return - список заданий
      */
     List<Task> findTasks(boolean status);

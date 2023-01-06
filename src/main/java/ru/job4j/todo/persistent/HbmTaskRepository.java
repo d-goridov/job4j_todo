@@ -17,9 +17,11 @@ public class HbmTaskRepository implements TaskRepository {
     private static final String UPDATE = "UPDATE Task SET description = :fDescription, "
             + "done = :fDone, priority_id = :fPriority WHERE id = :fId";
     private static final String DELETE = "DELETE Task WHERE id = :fId";
-    private static final String FIND_BY_ID = "SELECT t FROM Task AS t join fetch t.priority WHERE t.id = :fId";
+    private static final String FIND_BY_ID = "SELECT t FROM Task AS t join fetch t.priority join fetch t.categoryList"
+            + " WHERE t.id = :fId";
     private static final String SET_COMPLETE_TASK = "UPDATE Task SET done = :fDone WHERE id = :fId";
-    private static final String FIND_BY_STATUS = "SELECT t FROM Task AS t join fetch t.priority WHERE t.done = :fDone";
+    private static final String FIND_BY_STATUS = "SELECT t FROM Task AS t join fetch t.priority " +
+            "WHERE t.done = :fDone";
     private static final String FIND_ALL = "FROM Task AS t join fetch t.priority";
 
     private final CrudRepository crudRepository;

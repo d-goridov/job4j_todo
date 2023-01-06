@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Модель данных "Задание"
@@ -38,11 +40,28 @@ public class Task {
      */
     private boolean done;
 
+    /**
+     * Пользователь
+     */
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    /**
+     * Приоритет задания
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "priority_id")
     private Priority priority;
+
+    /**
+     * Список категорий задания
+     */
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "tasks_categories",
+            joinColumns = { @JoinColumn(name = "task_id")},
+            inverseJoinColumns = { @JoinColumn(name = "category_id")}
+    )
+    private List<Category> categoryList = new ArrayList<>();
 }
