@@ -24,7 +24,7 @@ public class SimpleTimeZoneService implements TimeZoneService {
 
     @Override
     public List<Task> changeTimeZoneOfTasksForUser(List<Task> tasks, User user) {
-        if(user.getTimeZone() == null) {
+        if (user.getTimeZone() == null) {
             user.setTimeZone(TimeZone.getDefault().getID());
         }
         for (Task task : tasks) {
