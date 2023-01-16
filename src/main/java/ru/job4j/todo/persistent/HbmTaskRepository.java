@@ -3,6 +3,8 @@ package ru.job4j.todo.persistent;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.job4j.todo.model.Task;
+import ru.job4j.todo.model.User;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -21,8 +23,8 @@ public class HbmTaskRepository implements TaskRepository {
             + " WHERE t.id = :fId";
     private static final String SET_COMPLETE_TASK = "UPDATE Task SET done = :fDone WHERE id = :fId";
     private static final String FIND_BY_STATUS = "SELECT t FROM Task AS t join fetch t.priority "
-            + "WHERE t.done = :fDone";
-    private static final String FIND_ALL = "FROM Task AS t join fetch t.priority";
+            + "WHERE t.done = :fDone AND user_id = :fUser_id";
+    private static final String FIND_ALL = "FROM Task AS t join fetch t.priority where user_id = :fUser_id";
 
     private final CrudRepository crudRepository;
 
@@ -55,12 +57,13 @@ public class HbmTaskRepository implements TaskRepository {
     }
 
     @Override
-    public List<Task> findAll() {
-       return crudRepository.getListResult(FIND_ALL, Task.class);
+    public List<Task> findAll(User user) {
+       return crudRepository.getListResult(FIND_ALL, Map.of("fUser_id", user.getId()), Task.class);
     }
 
     @Override
-    public List<Task> findTasks(boolean status) {
-        return crudRepository.getListResult(FIND_BY_STATUS, Map.of("fDone", status), Task.class);
+    public List<Task> findTasks(boolean status, User user) {
+        return crudRepository.getListResult(FIND_BY_STATUS,
+                Map.of("fDone", status, "fUser_id", user.getId()), Task.class);
     }
 }

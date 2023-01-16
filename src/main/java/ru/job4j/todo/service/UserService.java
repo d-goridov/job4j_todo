@@ -23,4 +23,6 @@ public interface UserService {
      * @return Optional.of(user) при успешном поиске, иначе Optional.empty()
      */
     Optional<User> findUserByEmailAndPassword(String email, String password);
+
+    boolean update(User user);
 }

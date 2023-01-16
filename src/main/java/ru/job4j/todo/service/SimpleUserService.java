@@ -2,6 +2,7 @@ package ru.job4j.todo.service;
 
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Service;
+import ru.job4j.todo.model.Task;
 import ru.job4j.todo.model.User;
 import ru.job4j.todo.persistent.UserRepository;
 
@@ -35,5 +36,10 @@ public class SimpleUserService implements UserService {
     @Override
     public Optional<User> findUserByEmailAndPassword(String email, String password) {
         return repository.findUserByEmailAndPassword(email, password);
+    }
+
+    @Override
+    public boolean update(User user) {
+        return repository.update(user);
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.job4j.todo.model.User;
+import ru.job4j.todo.service.TimeZoneService;
 import ru.job4j.todo.service.UserService;
 import ru.job4j.todo.util.UserSession;
 
@@ -17,15 +18,18 @@ import java.util.Optional;
 @Controller
 public class UserController {
 
-    private final UserService service;
+    private final UserService userService;
+    private final TimeZoneService timeZoneService;
 
-    public UserController(UserService service) {
-        this.service = service;
+    public UserController(UserService service, TimeZoneService timeZoneService) {
+        this.userService = service;
+        this.timeZoneService = timeZoneService;
     }
 
     @PostMapping("/registration")
-    public String registration(@ModelAttribute User user) {
-        Optional<User> optionalUser = service.add(user);
+    public String registration(@ModelAttribute User user, @RequestParam(name = "timeZone.id", required = false) String zoneId) {
+        user.setTimeZone(zoneId);
+        Optional<User> optionalUser = userService.add(user);
         if (optionalUser.isEmpty()) {
             return "redirect:/fail";
         }
@@ -54,6 +58,7 @@ public class UserController {
     public String addUser(Model model, HttpSession session) {
         User user = UserSession.getUser(session);
         model.addAttribute("user", user);
+        model.addAttribute("timezones", timeZoneService.getAllTimeZones());
         return "auth/addUser";
     }
 
@@ -65,7 +70,7 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(@ModelAttribute User user, HttpServletRequest request) {
-        Optional<User> userHbm = service.findUserByEmailAndPassword(
+        Optional<User> userHbm = userService.findUserByEmailAndPassword(
                 user.getEmail(), user.getPassword()
         );
         if (userHbm.isEmpty()) {
@@ -79,6 +84,23 @@ public class UserController {
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
+        return "redirect:/tasks/";
+    }
+
+    @GetMapping("/formUpdate")
+    public String formUpdate(Model model, HttpSession session) {
+        User user = UserSession.getUser(session);
+        model.addAttribute("user", user);
+        model.addAttribute("timezones", timeZoneService.getAllTimeZones());
+        return "user/formUpdate";
+    }
+
+    @PostMapping("/update")
+    public String update(@ModelAttribute User user, @RequestParam(name = "timeZone.id", required = false) String zoneId) {
+        user.setTimeZone(zoneId);
+        if (!userService.update(user)) {
+            return "/shared/error";
+        }
         return "redirect:/tasks/";
     }
 }

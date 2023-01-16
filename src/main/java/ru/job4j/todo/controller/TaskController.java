@@ -9,6 +9,7 @@ import ru.job4j.todo.model.User;
 import ru.job4j.todo.service.CategoryService;
 import ru.job4j.todo.service.PriorityService;
 import ru.job4j.todo.service.TaskService;
+import ru.job4j.todo.service.TimeZoneService;
 import ru.job4j.todo.util.UserSession;
 
 import javax.servlet.http.HttpSession;
@@ -24,18 +25,21 @@ public class TaskController {
     private final TaskService taskService;
     private final PriorityService priorityService;
     private final CategoryService categoryService;
+    private final TimeZoneService timeZoneService;
 
-    public TaskController(TaskService service, PriorityService priorityService, CategoryService categoryService) {
+    public TaskController(TaskService service, PriorityService priorityService, CategoryService categoryService, TimeZoneService timeZoneService) {
         this.taskService = service;
         this.priorityService = priorityService;
         this.categoryService = categoryService;
+        this.timeZoneService = timeZoneService;
     }
 
     @GetMapping("/")
     public String getAll(Model model, HttpSession session) {
         User user = UserSession.getUser(session);
+        List<Task> userTasks = timeZoneService.changeTimeZoneOfTasksForUser(taskService.findAll(user), user);
         model.addAttribute("user", user);
-        model.addAttribute("tasks", taskService.findAll());
+        model.addAttribute("tasks", userTasks);
         return "tasks/all";
     }
 
@@ -106,16 +110,18 @@ public class TaskController {
     @GetMapping("/newTasks")
     public String getNewTasksList(Model model, HttpSession session) {
         User user = UserSession.getUser(session);
+        List<Task> userTasks = timeZoneService.changeTimeZoneOfTasksForUser(taskService.findTasks(false, user), user);
         model.addAttribute("user", user);
-        model.addAttribute("newTasks", taskService.findTasks(false));
+        model.addAttribute("newTasks", userTasks);
         return "tasks/new";
     }
 
     @GetMapping("/doneTasks")
     public String getDoneTasksList(Model model, HttpSession session) {
         User user = UserSession.getUser(session);
+        List<Task> userTasks = timeZoneService.changeTimeZoneOfTasksForUser(taskService.findTasks(true, user), user);
         model.addAttribute("user", user);
-        model.addAttribute("doneTasks", taskService.findTasks(true));
+        model.addAttribute("doneTasks", userTasks);
         return "tasks/done";
     }
 }

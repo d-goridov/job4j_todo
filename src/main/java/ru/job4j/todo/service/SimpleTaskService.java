@@ -3,6 +3,7 @@ package ru.job4j.todo.service;
 import org.springframework.stereotype.Service;
 import ru.job4j.todo.model.Category;
 import ru.job4j.todo.model.Task;
+import ru.job4j.todo.model.User;
 import ru.job4j.todo.persistent.CategoryRepository;
 import ru.job4j.todo.persistent.PriorityRepository;
 import ru.job4j.todo.persistent.TaskRepository;
@@ -65,13 +66,13 @@ public class SimpleTaskService implements TaskService {
     }
 
     @Override
-    public List<Task> findAll() {
-        return repository.findAll();
+    public List<Task> findAll(User user) {
+        return repository.findAll(user);
     }
 
     @Override
-    public List<Task> findTasks(boolean status) {
-        return repository.findTasks(status);
+    public List<Task> findTasks(boolean status, User user) {
+        return repository.findTasks(status, user);
     }
 
 }

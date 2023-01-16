@@ -1,6 +1,7 @@
 package ru.job4j.todo.persistent;
 
 import ru.job4j.todo.model.Task;
+import ru.job4j.todo.model.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -52,12 +53,12 @@ public interface TaskRepository {
      * Метод выполняет поиск всех заданий
      * @return - список заданий
      */
-    List<Task> findAll();
+    List<Task> findAll(User user);
 
     /**
      * Метод выполняет заданий в зависимости
      * от стутуса выполнения
      * @return - список заданий
      */
-    List<Task> findTasks(boolean status);
+    List<Task> findTasks(boolean status, User user);
 }

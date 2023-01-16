@@ -1,6 +1,7 @@
 package ru.job4j.todo.service;
 
 import ru.job4j.todo.model.Task;
+import ru.job4j.todo.model.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -52,7 +53,7 @@ public interface TaskService {
      * Метод поиска всех заданий
      * @return - список заданий
      */
-    List<Task> findAll();
+    List<Task> findAll(User user);
 
     /**
      * Метод поиска заданий
@@ -60,5 +61,5 @@ public interface TaskService {
      * @param status - статус выполнения
      * @return - список заданий
      */
-    List<Task> findTasks(boolean status);
+    List<Task> findTasks(boolean status, User user);
 }
