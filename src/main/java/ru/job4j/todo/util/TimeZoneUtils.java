@@ -7,7 +7,10 @@ import java.time.ZoneId;
 import java.util.List;
 import java.util.TimeZone;
 
-public class TimeZoneUtils {
+public final class TimeZoneUtils {
+
+    private TimeZoneUtils() {
+    }
 
     public static List<Task> changeTimeZoneOfTasksForUser(List<Task> tasks, User user) {
         if (user.getTimeZone() == null) {
