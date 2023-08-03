@@ -31,5 +31,5 @@
 4. Переходите по ссылке http://localhost:8080/tasks/
 
 ## Контакты
-- Telegram: https://t.me/ShayPatr1ckCormak
+- Telegram: https://t.me/d_goridov
 - Email: **d.goridov@mail.ru**
